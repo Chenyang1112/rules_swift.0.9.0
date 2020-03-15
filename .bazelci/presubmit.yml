@@ -1,0 +1,72 @@
+---
+tasks:
+  macos_latest:
+    name: "Latest Bazel"
+    platform: macos
+    bazel: latest
+    build_targets:
+      - "//examples/..."
+    test_targets:
+      - "//examples/..."
+
+  macos_last_green:
+    name: "Last Green Bazel"
+    platform: macos
+    bazel: last_green
+    build_targets:
+      - "//examples/..."
+    test_targets:
+      - "//examples/..."
+
+  ubuntu1804_latest:
+    name: "Latest Bazel"
+    platform: ubuntu1804
+    bazel: latest
+    environment:
+      CC: clang
+    build_flags:
+      # On Linux, we look for Swift toolchain binaries on the path. We may be
+      # able to change this when we start auto-downloading toolchains (see
+      # https://github.com/bazelbuild/rules_swift/issues/4).
+      - "--action_env=PATH"
+    build_targets:
+      - "--"
+      - "//examples/..."
+      - "-//examples/apple/..."
+    test_flags:
+      - "--action_env=PATH"
+    test_targets:
+      - "--"
+      - "//examples/..."
+      - "-//examples/apple/..."
+
+  ubuntu1804_last_green:
+    name: "Last Green Bazel"
+    platform: ubuntu1804
+    bazel: last_green
+    environment:
+      CC: clang
+    build_flags:
+      # On Linux, we look for Swift toolchain binaries on the path. We may be
+      # able to change this when we start auto-downloading toolchains (see
+      # https://github.com/bazelbuild/rules_swift/issues/4).
+      - "--action_env=PATH"
+    build_targets:
+      - "--"
+      - "//examples/..."
+      - "-//examples/apple/..."
+    test_flags:
+      - "--action_env=PATH"
+    test_targets:
+      - "--"
+      - "//examples/..."
+      - "-//examples/apple/..."
+
+buildifier:
+  version: latest
+  # uninitialized has issues:
+  # - https://github.com/bazelbuild/buildtools/issues/549
+  # - https://github.com/bazelbuild/buildtools/issues/550
+  # https://github.com/bazelbuild/buildtools/pull/552 fixed part and worked
+  # around the other, but until there is a release with that, it stays off.
+  warnings: -uninitialized
